@@ -1,0 +1,27 @@
+<h1 style="margin-left: 20px; margin-top: 20px;">Episódios</h1>
+<div class="mat-elevation-z8">
+    <table id="main-table" mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let episodes" style="cursor: pointer;" routerLink="/episode/{{episodes.id}}">{{episodes.id}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef> Código </th>
+        <td mat-cell *matCellDef="let episodes" style="cursor: pointer;" routerLink="/episode/{{episodes.id}}">{{episodes.code}}</td>
+      </ng-container>
+      
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let episodes" style="cursor: pointer;" routerLink="/episode/{{episodes.id}}">{{episodes.name}}</td>
+      </ng-container>   
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>

@@ -1,0 +1,67 @@
+#container {
+    max-width: 900px;
+    padding: 0 10px 0 10px;
+    margin: 0 auto;
+}
+
+mat-card{
+    margin-top: 10px;
+}
+
+#title{
+    margin-top: 20px;
+    margin-bottom: 0;
+    display: inline-block;
+}
+
+#code{
+    display: inline-block;
+    padding: 5px;
+    background-color: cadetblue;
+    border-radius: 10px;
+    color: white;
+    margin-left: 20px;
+}
+
+.comment-title-box{
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+}
+
+.comment-title{
+    display: inline-block;
+    color: #757575;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.comment-container{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.episode-container{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.comment-form {
+    min-width: 150px;
+    max-width: 600px;
+    width: 100%;
+    padding-top: 30px;
+    margin: 0 auto;
+  }
+  
+.full-width-field {
+    width: 100%;
+}
+
+.button-container {
+    max-width: 500px;
+}
+
+.button-container > button{
+    margin-top: 20px;
+}

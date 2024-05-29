@@ -1,0 +1,44 @@
+<div id="container">
+  <div *ngIf="!episode.hasOwnProperty('name')" class="episode-container" style="margin-top: 20px;">
+    <h1>Erro 404</h1>
+    <h2>Não estou dizendo que você é burro, mas com certeza não é inteligente o suficiente para encontrar o que está procurando...</h2>
+    <h3>Este espisódio não existe ou ainda não está disponível. Volte ao início.</h3>
+  </div>
+  <div *ngIf="                                                                                              episode.hasOwnProperty('name')">
+  <div class="episode-container">
+  <h1 id="title">{{ episode.name }}</h1>
+  <h3 id="code">{{ episode.code }}</h3>
+  </div>
+  <div class="comment-container">
+    <h2>Comentários</h2>
+    <h3 *ngIf="comments.length == 0">Episódio sem comentários. Seja o primeiro a comentar!</h3>
+  <mat-card *ngFor="let comment of comments" class="example-card">
+    <mat-card-header>
+      <div class="comment-title-box">
+        <span class="comment-title">{{ comment.userName }}</span>
+        <span class="comment-title">{{ comment.date }}</span>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ comment.content }}</p>
+    </mat-card-content>
+  </mat-card>
+  </div>
+  <form class="comment-form" name="comment-form" [formGroup]="commentFormGroup" novalidate>
+    <h2>Comente</h2>
+    <mat-form-field class="full-width-field">
+      <mat-label class="color-label">Nome</mat-label>
+      <input matInput formControlName="name"  placeholder="Digite seu nome">
+    </mat-form-field>
+    <mat-form-field class="full-width-field">
+          <mat-label>Comentário</mat-label>
+          <input matInput formControlName="message" #message maxlength="255" placeholder="Ex.: Eu acho que...">
+          <mat-hint align="start"><strong>Não forneça informações pessoais</strong> </mat-hint>
+          <mat-hint align="end">{{message.value.length}} / 255</mat-hint>
+        </mat-form-field>
+    <div class="button-container">
+      <button [disabled]="!commentFormGroup.valid" mat-flat-button (click)="sendFormComment()" [color]="commentFormGroup.valid ? 'success' : 'primary'">Enviar</button>
+    </div>
+  </form>
+  </div>
+</div>

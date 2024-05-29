@@ -1,0 +1,15 @@
+#nav-menu {
+    margin-left: 40px;
+}
+
+.mat-elevation-z8{
+    margin: 20px;
+}
+
+#red-link {
+    background-color: crimson;
+}
+
+#main-table{
+    border: red;
+}
