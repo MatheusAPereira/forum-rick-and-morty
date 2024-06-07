@@ -1,6 +1,7 @@
 package com.rickandmorty.forum.controllers;
 
 
+import com.rickandmorty.forum.exceptions.NotFoundException;
 import com.rickandmorty.forum.helpers.Constants;
 import com.rickandmorty.forum.models.Comment;
 import com.rickandmorty.forum.models.Episode;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = Constants.API_VERSION + "/episodes")
-@CrossOrigin(origins = {"http://localhost:4200"})
 public class EpisodeController {
 
     @Autowired
@@ -28,7 +28,11 @@ public class EpisodeController {
     public ResponseEntity<PaginatedDTO<Episode>> getEpisodes(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size){
-        return ResponseEntity.ok(episodeService.listEpisodes(page, size));
+        PaginatedDTO<Episode> pag = episodeService.listEpisodes(page, size);
+        if (pag.getItems().isEmpty()){
+            throw new NotFoundException("Esta página de episódios não existe");
+        }
+        return ResponseEntity.ok(pag);
     }
 
     @GetMapping(path = "/all")
@@ -38,7 +42,11 @@ public class EpisodeController {
 
     @GetMapping(path = "/{episodeId}")
     public ResponseEntity<Episode> getEpisode(@PathVariable Long episodeId){
-        return ResponseEntity.ok(episodeService.getById(episodeId));
+        Episode episode = episodeService.getById(episodeId);
+        if (episode == null){
+            throw new NotFoundException("Este episódio não existe");
+        }
+        return ResponseEntity.ok(episode);
     }
 
     @GetMapping(path = "/{episodeId}/comments")
@@ -46,7 +54,11 @@ public class EpisodeController {
             @PathVariable Long episodeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size){
-        return ResponseEntity.ok(commentService.listByEpisodeId(episodeId, page, size));
+        PaginatedDTO<Comment> pag = commentService.listByEpisodeId(episodeId, page, size);
+        if (pag.getItems().isEmpty()){
+            throw new NotFoundException("Esta página de comentários não existe");
+        }
+        return ResponseEntity.ok(pag);
     }
 
     @GetMapping(path = "/{episodeId}/comments/all")

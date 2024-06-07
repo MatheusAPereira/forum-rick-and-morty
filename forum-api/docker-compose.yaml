@@ -4,24 +4,28 @@ services:
   postgres:
     image: postgres:alpine
     environment:
-      POSTGRES_DB: database-name
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: forum
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     ports:
-      - 5435:5432
-    restart:
-      on-failure: 3
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+    restart: always
 
   pgweb:
     image: sosedoff/pgweb
     depends_on:
       - postgres
     environment:
-      PGWEB_DATABASE_URL: postgres://username:password@postgres:5432/database-name?sslmode=disable
+      PGWEB_DATABASE_URL: postgres://admin:admin@postgres:5432/forum?sslmode=disable
     ports:
       - 8085:8081
-    restart:
-      on-failure: 3
+    networks:
+      - postgres-network
+    restart: always
 
   redis:
     image: redis:latest
@@ -39,7 +43,7 @@ services:
     environment:
       - REDIS_HOSTS=local:redis:6379
       - HTTP_USER=root
-      - HTTP_PASSWORD=qwerty
+      - HTTP_PASSWORD=root
     ports:
       - 8081:8081
     networks:
@@ -50,7 +54,10 @@ services:
 networks:
   redis-network:
     driver: bridge
+  postgres-network:
 
 volumes:
+  postgres-data:
   redis:
   redis-config:
+

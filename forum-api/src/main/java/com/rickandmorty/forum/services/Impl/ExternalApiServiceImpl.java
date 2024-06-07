@@ -24,7 +24,7 @@ public class ExternalApiServiceImpl {
     }
 
     @Scheduled(initialDelay = 0)
-    //@Scheduled(cron = "0 0 12 ? * 5")
+    @Scheduled(cron = "0 0 12 ? * 5")
     public void saveDataFromExternalApi() {
         RestTemplate restTemplate = new RestTemplate();
         String url = Constants.RICKANDMORTY_API_EPISODES;

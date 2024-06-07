@@ -14,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-episode',
@@ -25,6 +26,7 @@ import {
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
     
   ],
   templateUrl: './episode.component.html',
@@ -39,8 +41,6 @@ export class EpisodeComponent implements OnInit{
 
   episode: Episode = {}
 
-  //newComment!: Comment;
-
   commentFormGroup!: FormGroup;
 
   newComment: Comment = {
@@ -50,17 +50,19 @@ export class EpisodeComponent implements OnInit{
   };
 
   constructor(
-    private router: ActivatedRoute,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private commentService: CommentService,
     private episodeService: EpisodeService,
     private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar
   ){
     this.validateCommentFormGroup();
   }
 
   ngOnInit(){
 
-    this.episodeId = this.router.snapshot.paramMap.get('id');
+    this.episodeId = this.activatedRoute.snapshot.paramMap.get('id');
 
     if(this.episodeId){
         this.commentService.getComments(this.episodeId).subscribe(comments => {
@@ -96,9 +98,18 @@ export class EpisodeComponent implements OnInit{
     this.newComment.date = formattedDate;
     this.newComment.episodeId = this.episode.id;
     this.commentService.sendComment(this.newComment).subscribe((response) => {
-      console.log('Associado criado com sucesso');
+      this.snackBar.open("Comentário salvo!", "" ,{duration: 3000})
+      this.reloadComponent(true);
       this.commentFormGroup.reset();
     });
+  }
+
+  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+    const url=self ? this.router.url :urlToNavigateTo;
+    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+      this.router.navigate([`/${url}`]).then(()=>{
+      })
+    })
   }
 
 }
